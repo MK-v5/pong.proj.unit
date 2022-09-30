@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BallAlt : MonoBehaviour
 {
     // Start is called before the first frame update
+    public string TagtoIgnore = "MidLine";
     Vector3 Direction;
     public float moveSpeed;
     void Start()
@@ -29,6 +31,10 @@ public class BallAlt : MonoBehaviour
         {
             Direction = Vector3.Reflect(Direction, collision.contacts[0].normal);
         }
+        if (collision.gameObject.tag == "MidLine")
+        {
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -42,6 +48,7 @@ public class BallAlt : MonoBehaviour
             ResetBall();
             GameObject.Find("Canvas").GetComponent<ScoreScript>().AddP1Score();
         }
+
     }
     private void ResetBall()
     {
